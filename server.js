@@ -69,13 +69,17 @@ app.use(
 );
 
 // 接收文件上传结果
-app.post("/upload", (req, res, next) => {
-  console.log(req.body);
-  console.log(req.files);
+app.post("/upload/:name", (req, res, next) => {
+  /*console.log(req.body);*/
+  console.log("originalname=" + req.files[0].originalname);
+  console.log("filename=" + req.files[0].filename);
+
+  console.log("upload success!");
+
   res.send({
     error: 0,
     data: req.body,
-    msg: "上传成功"
+    msg: "upload success"
   });
 });
 
@@ -147,5 +151,5 @@ var server = app.listen(3000, function() {
   var host = server.address().address;
   var port = server.address().port;
 
-  console.log("应用实例，访问地址为 http://%s:%s", host, port);
+  console.log("application instance http://%s:%s", host, port);
 });
