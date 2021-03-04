@@ -51,16 +51,16 @@ console.log("Static root dir: " + root);
 var app = express();
 
 app.get("/:name", function(req, res) {
-  console.log(req.url + "777777777");
+  /*console.log(req.url + "777777777");*/
   var pathname = url.parse(req.url).pathname;
 
   var filepath = path.join(root, pathname);
   const ext = path.parse(filepath).ext;
-  console.log("filepath=" + filepath + " ready to read");
+  /*console.log("filepath=" + filepath + " ready to read");*/
 
   fs.readFile(filepath, (err, data) => {
     if (!err) {
-      console.log(filepath + " read success");
+      /*  console.log(filepath + " read success");*/
 
       res.setHeader("Content-type", mimeType[ext] || "text/plain");
       res.end(data);
@@ -72,8 +72,37 @@ app.get("/:name", function(req, res) {
 });
 
 app.get("/search/:name", function(req, res) {
-  console.log("receive ajax");
+  name = req.params.name;
+  console.log("receive " + name);
+
   res.end(JSON.stringify(product_catalog));
+});
+
+app.get("/pictute/:name", function(req, res) {
+  name = req.params.name;
+  console.log("receive picture " + name);
+
+  var filepath = path.join(root, "cat_1.png");
+  console.log("picture path = " + filepath);
+
+  const ext = path.parse(filepath).ext;
+
+  fs.readFile(filepath, (err, data) => {
+    if (!err) {
+      console.log(filepath + " read success");
+
+      res.setHeader("Content-type", mimeType[ext] || "text/plain");
+      /*res.setHeader(
+        "Content-type",
+        mimeType[ext] || " application/octet-stream"
+      );*/
+
+      res.end(data);
+    } else {
+      console.log("read pictute file error");
+      res.end("picture file not found");
+    }
+  });
 });
 
 var server = app.listen(3000, function() {
