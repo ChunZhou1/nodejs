@@ -39,12 +39,6 @@ module.exports = {
       sql.insert,
       [peoduct_name, product_content, product_catalog, link_pic],
       function(err, result) {
-        if (!err) {
-          console.log("add success!");
-        } else {
-          console.log("add fail!");
-        }
-
         callback(err, result);
       }
     );
@@ -54,12 +48,6 @@ module.exports = {
     //delete: "delete from product where id=?;",
     //begin to query
     db.query(sql.delete, [id], function(err, result) {
-      if (!err) {
-        console.log("delete success!");
-      } else {
-        console.log("delete fail!");
-      }
-
       callback(err, result);
     });
   },
@@ -77,12 +65,6 @@ module.exports = {
       sql.update,
       [peoduct_name, product_content, product_catalog, link_pic, id],
       function(err, result) {
-        if (!err) {
-          console.log("update success!");
-        } else {
-          console.log("update fail!");
-        }
-
         callback(err, result);
       }
     );
@@ -91,12 +73,6 @@ module.exports = {
     //select * from product where id=?;,
     //begin to query
     db.query(sql.queryById, [id], function(err, result) {
-      if (!err) {
-        console.log("queryById success!");
-      } else {
-        console.log("queryById fail!");
-      }
-
       callback(err, result);
     });
   },
@@ -104,12 +80,6 @@ module.exports = {
     //sselect * from product;,
     //begin to query
     db.query(sql.queryAll, function(err, result) {
-      if (!err) {
-        console.log("queryAll success!");
-      } else {
-        console.log("queryAll fail!");
-      }
-
       callback(err, result);
     });
   },
@@ -117,13 +87,6 @@ module.exports = {
     //delete * from product;,
     //begin to query
     db.query(sql.deleteAll, function(err, result) {
-      var return_data;
-      if (!err) {
-        console.log("deleteAll success!");
-      } else {
-        console.log("deleteAll fail!");
-      }
-
       callback(err, result);
     });
   },

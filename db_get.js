@@ -9,40 +9,37 @@ const my_db_data = require("./public_data");
 
 const router_db_get = express.Router();
 
-//test db
-//add: function(peoduct_name, product_content, product_catalog, link_pic)
-
-/*db_fun.add("default", "111111", "smart_home", "cent_1");*/
-
-/*db_fun.db_conection.query(db_fun.query_type.deleteAll, "", function(
-  err,
-  result
-) {
-  console.log(result);
-});*/
-
-async.each(
-  my_db_data.product,
-  function(item, callback) {
-    db_fun.add(
-      "default",
-      item.content,
-      item.catalog,
-      item.pic_content,
-      function(err, result) {
-        callback(err, result);
-      }
-    );
-  },
-  function(err) {
-    // all complete
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("SQL全部执行成功");
+function db_insert_product(json_obj, callback1) {
+  async.each(
+    json_obj,
+    function(item, callback) {
+      db_fun.add(
+        "default",
+        item.content,
+        item.catalog,
+        item.pic_content,
+        function(err, result) {
+          callback(err, result);
+        }
+      );
+    },
+    function(err) {
+      callback1(err);
     }
+  );
+}
+
+function db_query_all_product(callback1) {
+    db_fun.queryAll(function(err, result) {
+      callback1(err, result);
+    });
   }
-);
+  
+  function db_deleteAll_product(callback1) {
+    db_fun.deleteAll(function(err, result) {
+      callback1(err, result);
+    });
+  }
 
 router_db_get.get("/:name", (req, res, next) => {});
 
