@@ -7,7 +7,8 @@ var sql = {
     "update product set product_name=?, product_content=?,product_catalog=?,link_pic=? where id=?;",
   delete: "delete from product where id=?;",
   queryById: "select * from product where id=?;",
-  queryAll: "select * from product;"
+  queryAll: "select * from product;",
+  deleteAll: "delete from product;"
 };
 
 var db = mysql.createConnection({
@@ -24,50 +25,42 @@ console.log("db connected!!");
 
 //database structure: id,product_name,product_catalog,link_pic,product_content
 module.exports = {
-  add: function(peoduct_name, product_content, product_catalog, link_pic) {
+  add: function(
+    peoduct_name,
+    product_content,
+    product_catalog,
+    link_pic,
+    callback
+  ) {
     //begin to query
     //insert into product(id, peoduct_name, product_content,product_catalog,link_pic) values(0,?,?,?,?);",
 
-    console.log("enter query!");
     db.query(
       sql.insert,
       [peoduct_name, product_content, product_catalog, link_pic],
       function(err, result) {
-        var return_data;
         if (!err) {
           console.log("add success!");
-          return_data = {
-            code: 200,
-            msg: "add success"
-          };
         } else {
           console.log("add fail!");
-          return_data = {
-            code: 404,
-            msg: "add fail"
-          };
         }
-        console.log("result=", return_data);
+
+        callback(err, result);
       }
     );
     //connect database
   },
-  delete: function(id) {
+  delete: function(id, callback) {
     //delete: "delete from product where id=?;",
     //begin to query
     db.query(sql.delete, [id], function(err, result) {
-      var return_data;
       if (!err) {
-        return_data = {
-          code: 200,
-          msg: "delete success"
-        };
+        console.log("delete success!");
       } else {
-        return_data = {
-          code: 404,
-          msg: "delete fail"
-        };
+        console.log("delete fail!");
       }
+
+      callback(err, result);
     });
   },
   update: function(
@@ -75,7 +68,8 @@ module.exports = {
     product_content,
     product_catalog,
     link_pic,
-    id
+    id,
+    callback
   ) {
     //  "update product set product_name=?, product_content=?,product_catalog=?,link_pic =? where id=?;",
     //begin to query
@@ -83,52 +77,57 @@ module.exports = {
       sql.update,
       [peoduct_name, product_content, product_catalog, link_pic, id],
       function(err, result) {
-        var return_data;
         if (!err) {
-          return_data = {
-            code: 200,
-            msg: "update success"
-          };
+          console.log("update success!");
         } else {
-          return_data = {
-            code: 404,
-            msg: "update fail"
-          };
+          console.log("update fail!");
         }
-        console.log("result=", return_data);
+
+        callback(err, result);
       }
     );
   },
-  queryById: function(id) {
+  queryById: function(id, callback) {
     //select * from product where id=?;,
     //begin to query
     db.query(sql.queryById, [id], function(err, result) {
-      var return_data;
       if (!err) {
-        return_data.json(result);
+        console.log("queryById success!");
       } else {
-        return_data = {
-          code: 404,
-          msg: "querybyid fail"
-        };
+        console.log("queryById fail!");
       }
+
+      callback(err, result);
     });
   },
-  queryAll: function() {
+  queryAll: function(callback) {
     //sselect * from product;,
     //begin to query
     db.query(sql.queryAll, function(err, result) {
-      var return_data;
       if (!err) {
-        return_data = result;
+        console.log("queryAll success!");
       } else {
-        return_data = {
-          code: 404,
-          msg: "querryAll fail"
-        };
+        console.log("queryAll fail!");
       }
 
-      console.log(return_data);
+      callback(err, result);
     });
-  }
+  },
+  deleteAll: function(callback) {
+    //delete * from product;,
+    //begin to query
+    db.query(sql.deleteAll, function(err, result) {
+      var return_data;
+      if (!err) {
+        console.log("deleteAll success!");
+      } else {
+        console.log("deleteAll fail!");
+      }
+
+      callback(err, result);
+    });
+  },
+
+  query_type: sql,
+  db_conection: db
 };
