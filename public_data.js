@@ -20,22 +20,26 @@ const mimeType = {
 const product_catalog = [
   {
     id: 1,
-    catalog_name: "Smart Home"
+    catalog_name: "Smart Home",
+    catalog_pic: "cat_1"
   },
 
   {
     id: 2,
-    catalog_name: "Smart Manufacturing"
+    catalog_name: "Smart Manufacturing",
+    catalog_pic: "cat_2"
   },
 
   {
     id: 3,
-    catalog_name: "Smart health"
+    catalog_name: "Smart health",
+    catalog_pic: "cat_3"
   },
 
   {
     id: 4,
-    catalog_name: "Smart Farming - Agriculture"
+    catalog_name: "Smart Farming - Agriculture",
+    catalog_pic: "cat_4"
   }
 ];
 
