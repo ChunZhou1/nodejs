@@ -1,10 +1,10 @@
 const express = require("express");
 
-const bodyParser = require("body-parser");
-
 const fs = require("fs");
 const url = require("url");
 const path = require("path");
+
+const bodyParser = require("body-parser");
 
 const public_data = require("./public_data");
 
@@ -60,7 +60,7 @@ router_get.get("/json/:name", (req, res, next) => {
       break;
 
     default:
-      json_obj = { id: 9999, msg: "not find" };
+      json_obj = { id: 9999, msg: "not found" };
       break;
   }
 

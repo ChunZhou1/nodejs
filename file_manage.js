@@ -10,7 +10,7 @@ var mimeType = public_data.mimeType;
 
 const router_file = express.Router();
 
-var root = path.resolve(process.argv[2] || "../skynocean/dist");
+var root = path.resolve(process.argv[2] || "../admin_upload/dist");
 
 router_file.get("/:name", (req, res, next) => {
   var pathname = url.parse(req.url).pathname;
