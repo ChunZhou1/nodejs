@@ -8,6 +8,8 @@ const bodyParser = require("body-parser");
 
 const picture_dir = "./static/upload";
 
+const query = require("./db_get");
+
 //create router
 const router_upload = express.Router();
 
@@ -39,9 +41,40 @@ router_upload.post("/json/:name", (req, res, next) => {
 
   console.log("json_name=" + json_name);
 
-  console.log(req.body);
+  switch (json_name) {
+    case "product":
+      var input_obj = [];
+      input_obj.push(req.body);
+      query.db_insert_product(input_obj, function(err, result) {
+        if (!err) {
+          res.send("json upload success");
+        } else {
+          res.send("json upload fail");
+        }
+      });
 
-  res.send("json upload success");
+      break;
+
+    case "catalog":
+      var input_obj = [];
+      input_obj.push(req.body);
+
+      query.db_insert_catalog(input_obj, function(err, result) {
+        if (!err) {
+          console.log("insert catalog ok");
+
+          res.send("json upload success");
+        } else {
+          res.send("json upload fail");
+        }
+      });
+
+      break;
+
+    default:
+      res.send("json upload param err");
+      break;
+  }
 });
 
 module.exports = router_upload;

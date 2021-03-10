@@ -2,6 +2,8 @@ const express = require("express");
 
 const db_fun = require("./db");
 
+var async = require("async");
+
 //import test data
 const my_db_data = require("./public_data");
 
@@ -68,6 +70,30 @@ function db_deleteAll_catalog(callback1) {
   });
 }
 
+function db_delete_product(id, callback1) {
+  db_fun.delete(function(err, result) {
+    callback1(err, result);
+  });
+}
+
+function db_delete_catalog(id, callback1) {
+  db_fun.delete_catalog(function(err, result) {
+    callback1(err, result);
+  });
+}
+
+function db_update_product(id, callback1) {
+  db_fun.update(function(err, result) {
+    callback1(err, result);
+  });
+}
+
+function db_update_catalog(id, callback1) {
+  db_fun.update_catalog(function(err, result) {
+    callback1(err, result);
+  });
+}
+
 /*db_insert_catalog(my_db_data.product_catalog, function(err, result) {
   if (!err) {
     console.log("insert complete");
@@ -105,5 +131,13 @@ router_db_get.get("/:name", (req, res, next) => {});
 module.exports = {
   router_db_get: router_db_get,
   db_query_all_product: db_query_all_product,
-  db_query_all_catalog: db_query_all_catalog
+  db_query_all_catalog: db_query_all_catalog,
+  db_insert_product: db_insert_product,
+  db_insert_catalog: db_insert_catalog,
+  db_deleteAll_product: db_deleteAll_product,
+  db_deleteAll_catalog: db_deleteAll_catalog,
+  db_delete_product: db_delete_product,
+  db_delete_catalog: db_delete_catalog,
+  db_update_product: db_update_product,
+  db_update_catalog: db_update_catalog
 };
