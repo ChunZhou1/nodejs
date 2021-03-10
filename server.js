@@ -6,7 +6,7 @@ var router_file = require("./file_manage");
 
 var router_get = require("./process_get");
 
-var router_db_get = require("./db_get");
+var router_db = require("./db_get");
 
 var app = express();
 
@@ -16,7 +16,7 @@ app.use("/", router_file);
 
 app.use("/get", router_get);
 
-app.use("/dbget", router_db_get);
+app.use("/dbget", router_db.router_db_get);
 
 var server = app.listen(3000, function() {
   var host = server.address().address;

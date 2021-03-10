@@ -1,5 +1,7 @@
 const express = require("express");
 
+const query = require("./db_get");
+
 const fs = require("fs");
 const url = require("url");
 const path = require("path");
@@ -12,13 +14,15 @@ const router_get = express.Router();
 
 var mimeType = public_data.mimeType;
 
+const img_dir = "./static/upload";
+
 router_get.use(
   bodyParser.urlencoded({
     extended: false // 为true时将使用qs库处理数据，通常不需要
   })
 );
 
-var root = path.resolve(process.argv[2] || "../skynocean/dist");
+var root = path.resolve(process.argv[2] || img_dir);
 
 router_get.get("/picture/:name", (req, res, next) => {
   var file_name = req.url.slice(9);
@@ -45,26 +49,76 @@ router_get.get("/picture/:name", (req, res, next) => {
   });
 });
 
-router_get.get("/json/:name", (req, res, next) => {
+router_get.get("/json/:name", async (req, res, next) => {
   var file_name = req.url.slice(6);
-
-  var json_obj;
 
   switch (file_name) {
     case "product":
-      json_obj = public_data.product;
+      query.db_query_all_product(function(err, result) {
+        var json_obj;
+        if (!err) {
+          json_obj = Object.values(JSON.parse(JSON.stringify(result)));
+
+          res.end(JSON.stringify(tojson_product(json_obj)));
+        } else {
+          result = { id: 5555, msg: "not found" };
+          res.end(JSON.stringify(result));
+        }
+      });
       break;
 
     case "product_catalog":
-      json_obj = public_data.product_catalog;
+      query.db_query_all_catalog(function(err, result) {
+        var json_obj;
+        if (!err) {
+          json_obj = Object.values(JSON.parse(JSON.stringify(result)));
+
+          res.end(JSON.stringify(tojson_catalog(json_obj)));
+        } else {
+          result = { id: 5555, msg: "not found" };
+          res.end(JSON.stringify(result));
+        }
+      });
       break;
 
     default:
-      json_obj = { id: 9999, msg: "not found" };
+      json_obj = { id: 5555, msg: "param err" };
+      res.end(JSON.stringify(json_obj));
       break;
   }
-
-  res.end(JSON.stringify(json_obj));
 });
+
+function tojson_product(input_obj) {
+  var json1;
+  var json_array = [];
+
+  for (var i = 0; i < input_obj.length; i++) {
+    json1 = new Object();
+    json1.id = input_obj[i].id;
+    json1.content = input_obj[i].product_content;
+    json1.pic_content = input_obj[i].link_pic;
+    json1.catalog = input_obj[i].product_catalog;
+
+    json_array.push(json1);
+  }
+
+  return json_array;
+}
+
+function tojson_catalog(input_obj) {
+  var json1;
+  var json_array = [];
+
+  for (var i = 0; i < input_obj.length; i++) {
+    json1 = new Object();
+    json1.id = input_obj[i].id;
+    json1.catalog_name = input_obj[i].catalog_name;
+    json1.catalog_pic = input_obj[i].link_pic;
+
+    json_array.push(json1);
+  }
+
+  return json_array;
+}
 
 module.exports = router_get;
