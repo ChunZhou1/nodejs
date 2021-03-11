@@ -71,27 +71,39 @@ function db_deleteAll_catalog(callback1) {
 }
 
 function db_delete_product(id, callback1) {
-  db_fun.delete(function(err, result) {
+  db_fun.delete(id, function(err, result) {
     callback1(err, result);
   });
 }
 
 function db_delete_catalog(id, callback1) {
-  db_fun.delete_catalog(function(err, result) {
+  db_fun.delete_catalog(id, function(err, result) {
     callback1(err, result);
   });
 }
 
-function db_update_product(id, callback1) {
-  db_fun.update(function(err, result) {
-    callback1(err, result);
-  });
+function db_update_product(json_obj, callback1) {
+  db_fun.update(
+    "default",
+    json_obj.content,
+    json_obj.catalog,
+    json_obj.pic_content,
+    json_obj.id,
+    function(err, result) {
+      callback1(err, result);
+    }
+  );
 }
 
-function db_update_catalog(id, callback1) {
-  db_fun.update_catalog(function(err, result) {
-    callback1(err, result);
-  });
+function db_update_catalog(json_obj, callback1) {
+  db_fun.update_catalog(
+    json_obj.catalog_name,
+    json_obj.catalog_pic,
+    json_obj.id,
+    function(err, result) {
+      callback1(err, result);
+    }
+  );
 }
 
 /*db_insert_catalog(my_db_data.product_catalog, function(err, result) {

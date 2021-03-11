@@ -45,6 +45,7 @@ router_upload.post("/json/:name", (req, res, next) => {
     case "product":
       var input_obj = [];
       input_obj.push(req.body);
+
       query.db_insert_product(input_obj, function(err, result) {
         if (!err) {
           res.send("json upload success");
@@ -61,14 +62,80 @@ router_upload.post("/json/:name", (req, res, next) => {
 
       query.db_insert_catalog(input_obj, function(err, result) {
         if (!err) {
-          console.log("insert catalog ok");
-
           res.send("json upload success");
         } else {
           res.send("json upload fail");
         }
       });
 
+      break;
+
+    case "product_update":
+      var input_obj = [];
+      input_obj.push(req.body);
+
+      console.log(input_obj);
+
+      query.db_update_product(input_obj[0], function(err, result) {
+        if (!err) {
+          res.send("json upload success");
+        } else {
+          res.send("json upload fail");
+        }
+      });
+      break;
+
+    case "catalog_update":
+      var input_obj = [];
+      input_obj.push(req.body);
+
+      query.db_update_catalog(input_obj[0], function(err, result) {
+        if (!err) {
+          res.send("json upload success");
+        } else {
+          res.send("json upload fail");
+        }
+      });
+      break;
+
+    case "product_delete":
+      query.db_delete_product(req.body.id, function(err, result) {
+        if (!err) {
+          res.send("json upload success");
+        } else {
+          res.send("json upload fail");
+        }
+      });
+      break;
+
+    case "catalog_delete":
+      query.db_delete_catalog(req.body.id, function(err, result) {
+        if (!err) {
+          res.send("json upload success");
+        } else {
+          res.send("json upload fail");
+        }
+      });
+      break;
+
+    case "product_deleteAll":
+      query.db_deleteAll_product(function(err, result) {
+        if (!err) {
+          res.send("json upload success");
+        } else {
+          res.send("json upload fail");
+        }
+      });
+      break;
+
+    case "catalog_deleteAll":
+      query.db_deleteAll_catalog(function(err, result) {
+        if (!err) {
+          res.send("json upload success");
+        } else {
+          res.send("json upload fail");
+        }
+      });
       break;
 
     default:
